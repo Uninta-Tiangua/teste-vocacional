@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -109,7 +109,7 @@
 
         .popup-content {
             background-color: #ffffff;
-            padding: 40px;
+            padding: 20px;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             max-width: 400px;
@@ -117,6 +117,8 @@
             text-align: center;
             transform: translateY(-50px);
             transition: transform 0.5s ease;
+            max-height: 90vh; /* Limita a altura do conteúdo */
+            overflow-y: auto; /* Permite rolagem interna */
         }
 
         .popup-content.active {
@@ -159,6 +161,7 @@
         .popup-content input[type="text"],
         .popup-content input[type="email"],
         .popup-content input[type="tel"],
+        .popup-content input[type="date"],
         .popup-content select {
             width: calc(100% - 20px);
             padding: 12px;
@@ -174,6 +177,7 @@
         .popup-content input[type="text"]:focus,
         .popup-content input[type="email"]:focus,
         .popup-content input[type="tel"]:focus,
+        .popup-content input[type="date"]:focus,
         .popup-content select:focus {
             border-color: #A6192E;
             box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
@@ -190,6 +194,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-bottom: 15px;
         }
 
         .popup-content button:hover {
@@ -199,6 +204,24 @@
 
         .popup-content button:active {
             transform: translateY(0);
+        }
+
+        .consent {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666666;
+            justify-content: center;
+        }
+
+        .consent input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .consent label {
+            color: #666666;
         }
 
         @keyframes fadeIn {
@@ -327,6 +350,10 @@
                     <input type="email" id="userEmail" name="email" placeholder="Digite seu email" autocomplete="off" required>
                     <label for="phone">Telefone:</label>
                     <input type="tel" id="userPhone" name="phone" placeholder="Seu telefone" required>
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="userCPF" name="cpf" placeholder="Digite seu CPF" required>
+                    <label for="dob">Data de Nascimento:</label>
+                    <input type="date" id="userDOB" name="dob" required>
                     <label for="educationStatus">Status de Escolaridade:</label>
                     <select id="educationStatus" name="educationStatus" required>
                         <option value="" disabled selected>Selecione...</option>
@@ -335,6 +362,10 @@
                         <option value="Aluno do 2º Ano do Ensino Médio">Aluno do 2º Ano do Ensino Médio</option>
                         <option value="Aluno do 3º Ano do Ensino Médio">Aluno do 3º Ano do Ensino Médio</option>
                     </select>
+                    <div class="consent">
+                        <input type="checkbox" id="userConsent" required>
+                        <label for="userConsent">Aceito que a instituição use os dados informados para me contatar.</label>
+                    </div>
                     <button type="button" onclick="submitForm()">Enviar Resultado</button>
                 </form>
             </div>
@@ -381,18 +412,21 @@
             const userName = document.getElementById('userName').value;
             const userEmail = document.getElementById('userEmail').value;
             const userPhone = document.getElementById('userPhone').value;
+            const userCPF = document.getElementById('userCPF').value;
+            const userDOB = document.getElementById('userDOB').value;
             const educationStatus = document.getElementById('educationStatus').value;
+            const userConsent = document.getElementById('userConsent').checked;
 
-            if (userName && userEmail && userPhone && educationStatus) {
+            if (userName && userEmail && userPhone && userCPF && userDOB && educationStatus && userConsent) {
                 document.getElementById('formSection').classList.remove('active');
                 document.querySelector('.popup-content').classList.remove('active');
-                calculateResult(userName, userEmail, userPhone, educationStatus);
+                calculateResult(userName, userEmail, userPhone, userCPF, userDOB, educationStatus);
             } else {
-                alert('Por favor, preencha todos os campos.');
+                alert('Por favor, preencha todos os campos e aceite os termos.');
             }
         }
 
-        function calculateResult(userName, userEmail, userPhone, educationStatus) {
+        function calculateResult(userName, userEmail, userPhone, userCPF, userDOB, educationStatus) {
             const totalAnswers = answersCount.reduce((total, count) => total + count, 0);
             const percentages = answersCount.map(count => ((count / totalAnswers) * 100).toFixed(2));
 
@@ -496,7 +530,7 @@
             new Chart(ctx, chartConfig);
 
             // Envio do resultado por e-mail com formatação melhorada
-            const emailMessage = `Nome: ${userName}\n\nEmail: ${userEmail}\n\nTelefone: ${userPhone}\n\nStatus de Escolaridade: ${educationStatus}\n\nResultados:\n\n` + result.replace(/<[^>]*>?/gm, '').replace(/\n\n/g, '\n\n');
+            const emailMessage = `Nome: ${userName}\n\nEmail: ${userEmail}\n\nTelefone: ${userPhone}\n\nCPF: ${userCPF}\n\nData de Nascimento: ${userDOB}\n\nStatus de Escolaridade: ${educationStatus}\n\nResultados:\n\n` + result.replace(/<[^>]*>?/gm, '').replace(/\n\n/g, '\n\n');
 
             sendResultByEmail(emailMessage);
         }
