@@ -30,6 +30,13 @@
             animation: fadeIn 1s ease-in-out;
         }
 
+        h1 {
+            text-align: center;
+            color: #A6192E;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
         .question p {
             font-size: 16px;
             font-weight: bold;
@@ -166,6 +173,11 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
+        input:invalid, 
+        select:invalid {
+            box-shadow: none; /* Remove o sublinhado vermelho */
+        }
+
         .popup-content input[type="text"]:focus,
         .popup-content input[type="email"]:focus,
         .popup-content input[type="tel"]:focus,
@@ -224,7 +236,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- Suas perguntas -->
+        <h1 id="title">QUESTIONÁRIO</h1>
+        
+        <!-- Perguntas -->
         <div id="question1" class="question">
             <p><strong>1. Quando faz um trabalho em grupo, você é aquele(a) que:</strong></p><br>
             <input type="radio" name="q1" value="1"> Fica preocupado(a) com o bem-estar do grupo.<br>
@@ -234,7 +248,86 @@
             <button onclick="showNextQuestion(1)">Próxima Pergunta</button>
         </div>
 
-        <!-- Perguntas adicionais aqui -->
+        <div id="question2" class="question" style="display: none;">
+            <p><strong>2. Nas horas vagas o que você gosta de fazer?</strong></p><br>
+            <input type="radio" name="q2" value="1"> Descansar para reestabelecer as energias.<br>
+            <input type="radio" name="q2" value="2"> Colocar em dia meus afazeres e planejar minha semana.<br>
+            <input type="radio" name="q2" value="3"> Acessar a internet e as redes sociais.<br>
+            <input type="radio" name="q2" value="4"> Fazer atividades físicas e manter uma boa alimentação.<br>
+            <button onclick="showNextQuestion(2)">Próxima Pergunta</button>
+        </div>
+
+        <div id="question3" class="question" style="display: none;">
+            <p><strong>3. O que você mais valoriza:</strong></p><br>
+            <input type="radio" name="q3" value="1"> O bem-estar.<br>
+            <input type="radio" name="q3" value="2"> A comunicação.<br>
+            <input type="radio" name="q3" value="3"> A criatividade.<br>
+            <input type="radio" name="q3" value="4"> Atividades ao ar livre.<br>
+            <button onclick="showNextQuestion(3)">Próxima Pergunta</button>
+        </div>
+
+        <div id="question4" class="question" style="display: none;">
+            <p><strong>4. Qual é a sua prioridade ao fazer uma escolha?</strong></p><br>
+            <input type="radio" name="q4" value="1"> O impacto no bem-estar coletivo.<br>
+            <input type="radio" name="q4" value="2"> A eficiência e organização.<br>
+            <input type="radio" name="q4" value="3"> A originalidade e inovação.<br>
+            <input type="radio" name="q4" value="4"> A praticidade e funcionalidade.<br>
+            <button onclick="showNextQuestion(4)">Próxima Pergunta</button>
+        </div>
+
+        <div id="question5" class="question" style="display: none;">
+            <p><strong>5. Qual dessas atividades mais lhe agrada?</strong></p><br>
+            <input type="radio" name="q5" value="1"> Ajudar as pessoas em suas necessidades.<br>
+            <input type="radio" name="q5" value="2"> Organizar eventos e projetos.<br>
+            <input type="radio" name="q5" value="3"> Criar novas ideias e soluções.<br>
+            <input type="radio" name="q5" value="4"> Praticar esportes ou atividades ao ar livre.<br>
+            <button onclick="showNextQuestion(5)">Próxima Pergunta</button>
+        </div>
+
+        <div id="question6" class="question" style="display: none;">
+            <p><strong>6. Quando você pensa no futuro, qual destas opções lhe atrai mais?</strong></p><br>
+            <input type="radio" name="q6" value="1"> Trabalhar na área de saúde, ajudando os outros.<br>
+            <input type="radio" name="q6" value="2"> Ser um líder ou gestor de uma equipe.<br>
+            <input type="radio" name="q6" value="3"> Trabalhar com tecnologia e inovação.<br>
+            <input type="radio" name="q6" value="4"> Ter uma vida ativa e saudável.<br>
+            <button onclick="showNextQuestion(6)">Próxima Pergunta</button>
+        </div>
+
+        <div id="question7" class="question" style="display: none;">
+            <p><strong>7. Como você se descreve?</strong></p><br>
+            <input type="radio" name="q7" value="1"> Empático(a) e solidário(a).<br>
+            <input type="radio" name="q7" value="2"> Organizado(a) e detalhista.<br>
+            <input type="radio" name="q7" value="3"> Criativo(a) e inovador(a).<br>
+            <input type="radio" name="q7" value="4"> Energético(a) e ativo(a).<br>
+            <button onclick="showNextQuestion(7)">Próxima Pergunta</button>
+        </div>
+
+        <div id="question8" class="question" style="display: none;">
+            <p><strong>8. O que mais lhe incomoda?</strong></p><br>
+            <input type="radio" name="q8" value="1"> Ver pessoas sofrendo.<br>
+            <input type="radio" name="q8" value="2"> Desorganização e falta de planejamento.<br>
+            <input type="radio" name="q8" value="3"> Falta de inovação e criatividade.<br>
+            <input type="radio" name="q8" value="4"> Ficar parado(a) por muito tempo.<br>
+            <button onclick="showNextQuestion(8)">Próxima Pergunta</button>
+        </div>
+
+        <div id="question9" class="question" style="display: none;">
+            <p><strong>9. Quando enfrenta um desafio, você costuma:</strong></p><br>
+            <input type="radio" name="q9" value="1"> Buscar soluções que ajudem a todos.<br>
+            <input type="radio" name="q9" value="2"> Planejar cada passo com antecedência.<br>
+            <input type="radio" name="q9" value="3"> Procurar uma solução criativa.<br>
+            <input type="radio" name="q9" value="4"> Agir rapidamente e de forma prática.<br>
+            <button onclick="showNextQuestion(9)">Próxima Pergunta</button>
+        </div>
+
+        <div id="question10" class="question" style="display: none;">
+            <p><strong>10. O que mais lhe motiva?</strong></p><br>
+            <input type="radio" name="q10" value="1"> Fazer a diferença na vida das pessoas.<br>
+            <input type="radio" name="q10" value="2"> Alcançar metas e objetivos.<br>
+            <input type="radio" name="q10" value="3"> Criar algo novo e original.<br>
+            <input type="radio" name="q10" value="4"> Manter-se em forma e saudável.<br>
+            <button onclick="showNextQuestion(10)">Próxima Pergunta</button>
+        </div>
 
         <div id="question11" class="question" style="display: none;">
             <p><strong>11. Na sua turma você é...</strong></p><br>
@@ -261,7 +354,7 @@
                     <label for="dob">Data de Nascimento:</label>
                     <input type="date" id="userDOB" name="dob" required>
                     <label for="educationStatus">Status de Escolaridade:</label>
-                    <select id="educationStatus" name="educationStatus" spellcheck="false" required>
+                    <select id="educationStatus" name="educationStatus" required>
                         <option value="" disabled selected>Selecione...</option>
                         <option value="Concluiu o Ensino Médio">Concluiu o Ensino Médio</option>
                         <option value="Aluno do 1º Ano do Ensino Médio">Aluno do 1º Ano do Ensino Médio</option>
@@ -301,8 +394,6 @@
     <script>
         let currentQuestion = 1;
         let answersCount = [0, 0, 0, 0];
-
-        document.getElementById('question1').style.display = 'block';
 
         function showNextQuestion(questionNumber) {
             const selectedOption = document.querySelector(`input[name=q${questionNumber}]:checked`);
