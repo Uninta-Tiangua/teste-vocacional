@@ -175,7 +175,7 @@
 
         input:invalid, 
         select:invalid {
-            box-shadow: none; /* Remove o sublinhado vermelho */
+            box-shadow: none;
         }
 
         .popup-content input[type="text"]:focus,
@@ -238,7 +238,7 @@
     <div class="container">
         <h1 id="title">QUESTIONÁRIO</h1>
         
-        <!-- Perguntas -->
+         <!-- Perguntas -->
         <div id="question1" class="question">
             <p><strong>1. Quando faz um trabalho em grupo, você é aquele(a) que:</strong></p><br>
             <input type="radio" name="q1" value="1" required> Fica preocupado(a) com o bem-estar do grupo.<br>
@@ -342,7 +342,7 @@
         <div id="formSection" class="popup-overlay">
             <div class="popup-content">
                 <h2>Preencha seus dados para receber o resultado</h2>
-                <form id="contactForm">
+                <form id="contactForm" onsubmit="validateForm(event)">
                     <label>Nome</label>
                     <input type="text" id="userName" name="name" placeholder="Digite seu nome" autocomplete="off" required>
                     <label>Email</label>
@@ -379,7 +379,7 @@
                         <input type="checkbox" id="userConsent" required>
                         <label for="userConsent">Aceito que a instituição use os dados informados para me contatar.</label>
                     </div>
-                    <button type="submit" onclick="submitForm()">Enviar Resultado</button>
+                    <button type="submit">Enviar Resultado</button>
                 </form>
             </div>
         </div>
@@ -393,16 +393,20 @@
 
     <script>
         let currentQuestion = 1;
-        let answersCount = [0, 0, 0, 0];
+        let answersCount = [0, 0, 0, 0]; // Para contar respostas por categoria
 
         function showNextQuestion(questionNumber) {
             const selectedOption = document.querySelector(`input[name=q${questionNumber}]:checked`);
             if (!selectedOption) {
                 alert("Por favor, selecione uma opção antes de prosseguir.");
-                return; // Impede o avanço se nenhuma opção for selecionada
+                return; 
             }
+
+            // Salvar resposta
             const answerValue = parseInt(selectedOption.value);
             answersCount[answerValue - 1]++;
+
+            // Esconder pergunta atual e mostrar a próxima
             document.getElementById(`question${questionNumber}`).style.display = 'none';
             const nextQuestionNumber = questionNumber + 1;
             const nextQuestionDiv = document.getElementById(`question${nextQuestionNumber}`);
@@ -422,7 +426,34 @@
             document.getElementById('question11').style.display = 'none';
             document.getElementById('formSection').classList.add('active');
             document.querySelector('.popup-content').classList.add('active');
-            document.getElementById('title').style.display = 'none'; // Oculta o título "QUESTIONÁRIO"
+            document.getElementById('title').style.display = 'none'; 
+        }
+
+        function validateForm(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('contactForm');
+
+            // Validação do CPF
+            const cpf = document.getElementById('userCPF').value;
+            if (!/^\d{11}$/.test(cpf)) {
+                alert("Por favor, insira um CPF válido (11 dígitos).");
+                return;
+            }
+
+            // Validação da Data de Nascimento
+            const dob = new Date(document.getElementById('userDOB').value);
+            const today = new Date();
+            if (dob >= today || dob.getFullYear() < 1900) {
+                alert("Por favor, insira uma data de nascimento válida.");
+                return;
+            }
+
+            if (form.checkValidity()) {
+                submitForm(); 
+            } else {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+            }
         }
 
         function submitForm() {
@@ -435,10 +466,9 @@
                 dob: document.getElementById('userDOB').value,
                 educationStatus: document.getElementById('educationStatus').value,
                 city: document.getElementById('city').value,
-                result: result.replace(/<[^>]*>?/gm, '') // Remover tags HTML do resultado antes de enviar
+                result: result.replace(/<[^>]*>?/gm, '') 
             };
 
-            // Envio dos dados para o Google Sheets
             fetch('https://script.google.com/macros/s/AKfycbwzQBqoqdJKCOfjmcO-HVzmukTi0uUmncd2mDemaL9MbC-AIxE2NmhTigrpQS-zZ4tM/exec', {
                 method: 'POST',
                 mode: 'no-cors',
